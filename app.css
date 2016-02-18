@@ -1,0 +1,49 @@
+@import url(https://fonts.googleapis.com/css?family=Noto+Sans:400,700);
+
+body {
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.blue {
+    font-size: 1.4em;
+    
+    color: white;
+    background-color: #555;
+    
+    
+    padding: 2px 10px;
+    margin: 16px 0px;
+    border-radius: 4px;
+}
+
+#results {
+}
+
+.resultHeader {
+    font-size: 1.2em;
+    color: #2B7BBA;
+    font-weight: 700;
+}
+
+#resultsFound {
+    font-weight: 700;
+}
+
+.result {
+    padding: 10px 0px;
+    margin: 5px 0px;
+}
+
+.result:hover {
+    background-color: #FEFEFE;
+}
+
+
+.bordered {
+    margin-top: 10px;
+    border: 1px solid #EEE;
+    min-height: 400px;
+    box-shadow: 0px 0px 7px 3px #EEE;
+    border-radius: 2px;
+}
+
