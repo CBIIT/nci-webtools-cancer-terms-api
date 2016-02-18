@@ -2,6 +2,8 @@ import xml.etree.ElementTree as et
 import json
 import os
 
+# Example usage: writeDictionary('GlossaryTerm', 'dictionary.js')
+
 def loadXML(filename):
     root = et.parse(filename).getroot()
     definition = root.attrib
@@ -12,15 +14,14 @@ def loadXML(filename):
 
         elif child.tag == 'TermDefinition':
             for sub in child:
-                if sub.tag == 'DefinitionText':
+                if (sub.tag == 'Audience' and sub.text != 'Patient') \
+                or (sub.tag == 'Dictionary' and sub.text != 'Cancer.gov'):
+                    return
+                elif sub.tag == 'DefinitionText':
                     definition[sub.tag] = sub.text
-                elif sub.tag == 'Audience' and sub.text != 'Patient':
-                    return
-                elif sub.tag == 'Dictionary.text' and sub.text != 'Cancer.gov':
-                    return
 
-    return definition            
-    
+    return definition
+
 def generateDictionary(directory):
     definitions = []
 
