@@ -1,10 +1,13 @@
-import xml.etree.ElementTree as et
+import xml.etree.cElementTree as et
 import sqlite3
 import os
 
 # Example usage: writeDictionary('GlossaryTerm', 'dictionary.js')
 
 def loadXML(filename):
+    if not filename.endswith('.xml'):
+        return
+    
     root = et.parse(filename).getroot()
     term = root.attrib
 
