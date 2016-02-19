@@ -33,13 +33,17 @@ def generateDictionary(directory):
     return terms
 
 def writeDictionary(directory, dbname):
+    if os.path.isfile(dbname):
+        os.remove(dbname)
+
     conn = sqlite3.connect(dbname)
     
     c = conn.cursor()
     c.execute('create table terms(id text, name text, definition text)')
     
     for term in generateDictionary(directory):
-        c.execute('insert into terms values (?, ?, ?)', (term['id'], term['TermName'], term['DefinitionText']))
+        if (term):
+            c.execute('insert into terms values (?, ?, ?)', (term['id'], term['TermName'], term['DefinitionText']))
     
     conn.commit()
     conn.close()
