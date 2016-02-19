@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE GlossaryTerm >
+<GlossaryTerm id="CDR0000045873"><TermName>risk factor</TermName><TermPronunciation>(... FAK-ter)</TermPronunciation><TermDefinition><DefinitionText>Something that
+          increases the chance of developing a disease. Some examples
+          of risk factors for cancer are age, a family history of
+          certain cancers, use of tobacco products, being exposed to
+          radiation or certain chemicals, infection with certain
+          viruses or bacteria, and certain genetic
+          changes.</DefinitionText><Dictionary>Cancer.gov</Dictionary><Audience>Patient</Audience></TermDefinition><MediaLink ref="CDR0000707368" type="audio/mpeg" alt="Pronunciation of dictionary term &quot;risk factor&quot;" language="en" id="_3"/><MediaLink ref="CDR0000707367" type="audio/mpeg" alt="Pronunciation of dictionary term &quot;factor de riesgo&quot;" language="es" id="_4"/><SpanishTermName>factor de riesgo</SpanishTermName><SpanishTermDefinition><DefinitionText>Algo que puede aumentar la
+probabilidad de padecer de una enfermedad. Algunos ejemplos
+de factores de riesgo para el cáncer son: edad,
+antecedentes familiares de ciertos cánceres, consumo de
+productos del tabaco,      exposición a la radiación u otras sustancias químicas, infecciones por ciertos virus o bacterias, y ciertos cambios
+genéticos.</DefinitionText><Dictionary>Cancer.gov</Dictionary><Audience>Patient</Audience></SpanishTermDefinition><DateLastModified>2009-11-17</DateLastModified><RelatedInformation><RelatedExternalRef UseWith="en" xref="http://www.cancer.gov/about-cancer/causes-prevention/risk">Risk Factors for Cancer </RelatedExternalRef><RelatedExternalRef UseWith="es" xref="http://www.cancer.gov/espanol/cancer/causas-prevencion/riesgo">Factores de riesgo de cáncer</RelatedExternalRef></RelatedInformation></GlossaryTerm>

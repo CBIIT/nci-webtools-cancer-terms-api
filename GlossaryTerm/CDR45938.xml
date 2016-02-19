@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE GlossaryTerm >
+<GlossaryTerm id="CDR0000045938"><TermName>vaccine</TermName><TermPronunciation>(vak-SEEN)</TermPronunciation><TermDefinition><DefinitionText>A substance or
+          group of substances meant to cause the immune system to
+          respond to a tumor or to microorganisms, such as bacteria
+          or viruses. A vaccine can help the body recognize and
+          destroy cancer cells or microorganisms.</DefinitionText><Dictionary>Cancer.gov</Dictionary><Audience>Patient</Audience></TermDefinition><MediaLink ref="CDR0000707482" type="audio/mpeg" alt="Pronunciation of dictionary term &quot;vaccine&quot;" language="en" id="_3"/><MediaLink ref="CDR0000707481" type="audio/mpeg" alt="Pronunciation of dictionary term &quot;vacuna&quot;" language="es" id="_4"/><SpanishTermName>vacuna</SpanishTermName><SpanishTermDefinition><DefinitionText>Sustancia o grupo de sustancias
+destinadas a hacer que el sistema inmunitario responda ante
+un tumor o ante microorganismos, como las bacterias o los
+virus. Una vacuna puede ayudar al cuerpo a reconocer y
+destruir las células cancerosas o los
+microorganismos.</DefinitionText><Dictionary>Cancer.gov</Dictionary><Audience>Patient</Audience></SpanishTermDefinition><RelatedInformation><RelatedExternalRef UseWith="en" xref="http://www.cancer.gov/about-cancer/causes-prevention/vaccines-fact-sheet">Cancer
+Vaccines </RelatedExternalRef><RelatedExternalRef UseWith="es" xref="http://www.cancer.gov/espanol/cancer/causas-prevencion/hoja-informativa-vacunas">Vacunas contra el
+cáncer</RelatedExternalRef></RelatedInformation></GlossaryTerm>

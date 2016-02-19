@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE GlossaryTerm >
+<GlossaryTerm id="CDR0000044265"><TermName>CIS</TermName><TermDefinition><DefinitionText>The CIS is the National Cancer Institute's link to the
+          public, interpreting and explaining research findings in a
+          clear and understandable manner, and providing personalized
+          responses to specific questions about cancer. Access the
+          CIS by calling 1-800-4-CANCER (1-800-422-6237), or by using
+          the LiveHelp instant-messaging service at
+          <ExternalRef xref="https://livehelp.cancer.gov/app/chat/chat_launch">https://livehelp.cancer.gov</ExternalRef>. Also called Cancer Information Service.</DefinitionText><Dictionary>Cancer.gov</Dictionary><Audience>Patient</Audience></TermDefinition><SpanishTermName>CIS</SpanishTermName><SpanishTermDefinition><DefinitionText>El CIS es el enlace del
+Instituto Nacional del Cáncer con el público, para
+interpretar y explicar los resultados de los hallazgos de
+las investigaciones de manera clara y comprensible, y dar
+respuestas personalizadas a preguntas específicas acerca
+del cáncer. Para comunicarse con el CIS, llamar al
+1-800-4-CANCER (1-800-422-6237) o consultar en línea usando
+LiveHelp (Ayuda en Vivo) (disponible solo en inglés), el
+servicio de mensajes instantáneos en:
+<ExternalRef xref="https://livehelp.cancer.gov/app/chat/chat_launch">https://livehelp.cancer.gov</ExternalRef>. También se llama Servicio de Información sobre el Cáncer.</DefinitionText><Dictionary>Cancer.gov</Dictionary><Audience>Patient</Audience></SpanishTermDefinition><DateLastModified>2012-04-04</DateLastModified><RelatedInformation><RelatedExternalRef UseWith="en" xref="http://www.cancer.gov/contact/contact-center">NCI Contact Center - Cancer
+Information Service</RelatedExternalRef><RelatedExternalRef UseWith="es" xref="http://www.cancer.gov/espanol/contactenos/centro-de-contacto">Centro de Contacto del NCI—Servicio de Información sobre el Cáncer </RelatedExternalRef></RelatedInformation></GlossaryTerm>
