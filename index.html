@@ -5,39 +5,62 @@
 	<meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/0.7.3/purify.min.js"></script>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 	
-	<script src="assets/app.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"></script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" rel="stylesheet">
+	
 	<link rel="stylesheet" href="assets/app.css" />
+	<script src="assets/app.js"></script>
 
-	<link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+	<link rel="shortcut icon" href="assets/favicon.ico" type="image/vnd.microsoft.icon" />
 	<title>NCI Dictionary</title>
 </head>
 
 <body>
 	<div class="bordered container">
 
-		<header>
-			<div class="blue">
+		<header class="blue">
 				NCI Dictionary of Cancer Terms
-			</div>
 		</header>
-
-		<div class="input-group">
-			<input id="term" type="text" class="form-control" placeholder="Enter term...">
-			<span class="input-group-btn">
-				<button id="search" class="btn btn-primary" type="button">Search</button>
-			</span>
-		</div>
+        
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" role="tab" href="#search">Search</a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" role="tab" href="#sample">Sample Text</a>
+            </li>
+        </ul>
+		
 		<hr>
 		
-		<div>
-			<h4 id="resultsFound"></h4>
-			<div id="results"></div>
-		</div>
+        <div class="tab-content">
+            <div class="tab-pane active" id="search" role="tabpanel">
+           		<div class="input-group">
+			        <input id="term" type="text" class="form-control" placeholder="Enter term...">
+			        <span class="input-group-btn">
+				        <button id="search" class="btn btn-primary" type="button">Search</button>
+			        </span>
+		        </div>
+		        
+		        <hr>
+		
+		        <div>
+			        <h4 id="resultsFound"></h4>
+			        <div id="results"></div>
+		        </div>
+            </div>
+            <div class="tab-pane" id="sample" role="tabpanel">
+            
+            
+            </div>
+        </div>
+
 	</div>
 </body>
 </html>
