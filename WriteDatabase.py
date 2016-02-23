@@ -1,14 +1,25 @@
 from pysqlcipher import dbapi2 as sqlcipher
 import xml.etree.cElementTree as et
 import sqlite3
-import time
 import os
 
-# Example usage: writeDictionary('GlossaryTerm', 'dictionary.js')
+# Example usage: createDatabase('GlossaryTerm', 'glossary.db')
 # Test Passphrase - load from external configuration in production
 key = 'passphrase'
 
+#####################################################################
+# Loads the passphrase from a keyfile 
+# Parameters - 1. The name of the keyfile
+#####################################################################
+def loadKey(filename):
+    with open('keyfile', 'r') as k:
+        key = k.read().strip()
 
+
+#####################################################################
+# Returns the contents of a single xml document as an array 
+# Parameters - 1. The filename of the XML document
+#####################################################################
 def loadXML(filename):
     if not filename.endswith('.xml'):
         return
@@ -27,51 +38,35 @@ def loadXML(filename):
                     return
                 elif sub.tag == 'DefinitionText':
                     term[sub.tag] = sub.text
-
+                        for subchild in sub
+                            term[sub.tag] += subchild.text + subchild.tail            
     return term
     
+
+#####################################################################
+# Returns the contents of a directory as an array of glossary terms 
+# Parameters - 1. The name of the directory containing XML documents
+#####################################################################
 def generateDictionary(directory):
     terms = []
 
     os.chdir(directory)
     for file in os.listdir('.'):
-        terms.append(loadXML(file))
-    os.chdir('..')
+        term = loadXML(file)
 
-    return terms
-
-def writeDictionary(directory, dbname):
-    init = time.time()
-
-    if os.path.isfile(dbname):
-        os.remove(dbname)
-
-    db = sqlite3.connect(dbname)
-    db.execute('create table terms(id text, name text, definition text)')
-    
-    for term in generateDictionary(directory):
         if (term):
-            db.execute('insert into terms values (?, ?, ?)', (term['id'], term['TermName'], term['DefinitionText']))
+            terms.append(term)
     
-    db.commit()
-    db.close()
+    os.chdir('..')
+    return terms
     
-    print 'Time required to create non-encrypted database: ' + str(time.time() - init)
 
-
-def queryDictionary(dbname, term):
-    db = sqlite3.connect(dbname)
-    term = ('%' + term + '%',)
-
-    results = db.execute('select * from terms where name like ?', term).fetchall()
-    db.close()
-
-    return results
-    
-    
-def writeEncryptedDictionary(directory, dbname):
-    init = time.time()
-
+#####################################################################
+# Creates an encrypted glossary database from a directory
+# Parameters - 1. Directory containing XML documents to read
+#              2. Name of generated database file
+#####################################################################
+def createDatabase(directory, dbname):
     if os.path.isfile(dbname):
         os.remove(dbname)
 
@@ -80,18 +75,33 @@ def writeEncryptedDictionary(directory, dbname):
     db.execute('create table terms(id text, name text, definition text)')
     
     for term in generateDictionary(directory):
-        if (term):
-            db.executescript('pragma key="' + key + '"')
-            db.execute('insert into terms values (?, ?, ?)', (term['id'], term['TermName'], term['DefinitionText']))
+        db.executescript('pragma key="' + key + '"')
+        db.execute('insert into terms values (?, ?, ?)', (term['id'], term['TermName'], term['DefinitionText']))
     
     db.commit()
     db.close()
-    
-    print 'Time required to create encrypted database: ' + str(time.time() - init)
 
-def queryEncryptedDictionary(dbname, term):
+
+#####################################################################
+# Queries an encrypted glossary database
+# Parameters - 1. Database filename
+#              2. User Query
+#              3. Search Type:
+#                 1. 'contains' - The term name contains the query 
+#                 2. 'begins'   - The term name begins with the query
+#                 3. 'exact'    - The term name matches the query
+#####################################################################
+def queryDatabase(dbname, term, type = 'exact'):
     db = sqlcipher.connect(dbname)
-    term = ('%' + term + '%',)
+    
+    if type == 'contains':
+        term = ('%' + term + '%',)
+
+    elif type == 'begins':
+        term = (term + '%',)
+    
+    elif type == 'exact':
+        term = (term,)
 
     db.executescript('pragma key="' + key + '"')
     results = db.execute('select * from terms where name like ?', term).fetchall()
