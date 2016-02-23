@@ -37,10 +37,11 @@ def loadXML(filename):
                 or (sub.tag == 'Dictionary' and sub.text != 'Cancer.gov'):
                     return
                 elif sub.tag == 'DefinitionText':
-                    term[sub.tag] = sub.text
-                        for subchild in sub
-                            term[sub.tag] += subchild.text + subchild.tail            
-    return term
+                    term[sub.tag] = sub.text if sub.text else ''
+                    for subchild in sub:
+                        term[sub.tag] += subchild.text + subchild.tail if subchild.tail else ''
+                            
+    return (term['id'], term['TermName'], term['DefinitionText'])
     
 
 #####################################################################
@@ -71,12 +72,12 @@ def createDatabase(directory, dbname):
         os.remove(dbname)
 
     db = sqlcipher.connect(dbname)
-    db.executescript('pragma key="' + key + '"')
+    db.executescript('pragma key = "%s" ' %key)
     db.execute('create table terms(id text, name text, definition text)')
     
     for term in generateDictionary(directory):
-        db.executescript('pragma key="' + key + '"')
-        db.execute('insert into terms values (?, ?, ?)', (term['id'], term['TermName'], term['DefinitionText']))
+        db.executescript('pragma key = "%s" ' %key)
+        db.execute('insert into terms values (?, ?, ?)', term)
     
     db.commit()
     db.close()
@@ -95,15 +96,13 @@ def queryDatabase(dbname, term, type = 'exact'):
     db = sqlcipher.connect(dbname)
     
     if type == 'contains':
-        term = ('%' + term + '%',)
+        term = '%' + term + '%'
 
     elif type == 'begins':
-        term = (term + '%',)
-    
-    elif type == 'exact':
-        term = (term,)
+        term += '%'
 
-    db.executescript('pragma key="' + key + '"')
+    term = tuple([term])
+    db.executescript('pragma key = "%s" ' %key)
     results = db.execute('select * from terms where name like ?', term).fetchall()
     db.close()
 
