@@ -18,7 +18,8 @@ function submit() {
         $('#term').attr('disabled', true);
         $('#search').attr('disabled', true);
         
-        var request = $.post('http://' + window.location.hostname + '/glossaryRest/define', JSON.stringify({ term: term }))
+        var request = $.post('http://' + window.location.hostname + '/glossaryRest/define', 
+        JSON.stringify({ term: term, type: 'contains' }))
 
         request.done(function(data) {
             console.log(data);

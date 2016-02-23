@@ -9,7 +9,7 @@ import os
 # Test Passphrase - load from external configuration in production
 
 key = 'passphrase'
-
+loadKey('keyfile')
 
 #####################################################################
 # Loads the passphrase from a keyfile
@@ -17,8 +17,9 @@ key = 'passphrase'
 #####################################################################
 
 def loadKey(filename):
-    with open('keyfile', 'r') as k:
-        key = k.read().strip()
+    if os.path.isfile(filename):
+        with open(filename, 'r') as k:
+            key = k.read().strip()
 
 
 
@@ -110,8 +111,8 @@ def queryDatabase(dbname, term, type = 'exact'):
 
     if type == 'contains':
         term = '%' + term + '%'
+        
     elif type == 'begins':
-
         term += '%'
 
     term = tuple([term])
