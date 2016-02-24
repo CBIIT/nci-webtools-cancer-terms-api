@@ -4,7 +4,7 @@ body {
     font-family: 'Noto Sans', sans-serif;
 }
 
-.blue {
+header {
     font-size: 1.4em;
     
     color: white;
@@ -14,9 +14,6 @@ body {
     padding: 2px 10px;
     margin: 16px 0px;
     border-radius: 4px;
-}
-
-#results {
 }
 
 .resultHeader {
@@ -38,6 +35,9 @@ body {
     background-color: #FEFEFE;
 }
 
+.vertical-spacer {
+    margin: 10px 0;
+}
 
 .bordered {
     margin-top: 10px;

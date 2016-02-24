@@ -23,9 +23,7 @@
 <body>
 	<div class="bordered container">
 
-		<header class="blue">
-				NCI Dictionary of Cancer Terms
-		</header>
+		<header>NCI Glossary of Cancer Terms API Demo</header>
         
         <ul class="nav nav-pills">
             <li class="nav-item">
@@ -40,6 +38,8 @@
 		<hr>
 		
         <div class="tab-content">
+            
+            <!-- Search -->
             <div class="tab-pane active" id="search" role="tabpanel">
            		<div class="input-group">
 			        <input id="term" type="text" class="form-control" placeholder="Enter term...">
@@ -50,17 +50,23 @@
 		        
 		        <hr>
 		
-		        <div>
-			        <h4 id="resultsFound"></h4>
-			        <div id="results"></div>
-		        </div>
+		        <h4 id="resultsFound"></h4>
+		        <div id="results"></div>
             </div>
+            
+            
+            <!-- Enter Sample Text -->
             <div class="tab-pane" id="sample" role="tabpanel">
-            
-            
+                <div class="clearfix">
+                    <textarea id="sampleText" class="form-control vertical-spacer" rows="6"></textarea>
+                    <button id="submitText" class="btn btn-primary pull-xs-right" type="button">Submit</button>
+                </div>
+                
+                <div id="processedText" class="result vertical-spacer">
+                </div>
             </div>
+        
         </div>
-
 	</div>
 </body>
 </html>
