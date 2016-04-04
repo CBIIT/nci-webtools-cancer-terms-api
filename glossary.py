@@ -19,9 +19,9 @@ app.config['key'] = 'passphrase'
 #####################################################################
 
 @app.route('/glossaryRest/defineCDR', methods = ['POST'])
-def define():
+def defineCDR():
     data = json.loads(request.stream.read())
-    results = queryCDR(data)
+    results = queryCDR(data['id'])
     
     if results:
         return json.dumps(results)
@@ -43,7 +43,7 @@ def define():
 def define():
     data = json.loads(request.stream.read())
     term = data['term']
-    type = data['type'] 
+    type = data['type']
     
     results = query(term, type)
     
@@ -139,7 +139,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     port_num = int(args.port_number)
-    loadKey(args.secret_key)
+    loadKey(args.keyfile)
 
     app.run(host='0.0.0.0', port = port_num, debug = False, use_evalex = False)
     
