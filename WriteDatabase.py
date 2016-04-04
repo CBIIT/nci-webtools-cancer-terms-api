@@ -5,11 +5,14 @@ import xml.etree.cElementTree as et
 import sqlite3
 import os
 
-# Example usage: createDatabase('GlossaryTerm', 'glossary.db')
-# Test Passphrase - load from external configuration in production
+# Example usage: 
+# loadKey('keyfile') (if exists)
+# createDatabase('GlossaryTerm', 'glossary.db')
+#
+# Load passphrase from external file in production
+# Default filename is 'keyfile'
 
 key = 'passphrase'
-loadKey('keyfile')
 
 #####################################################################
 # Loads the passphrase from a keyfile
@@ -19,7 +22,9 @@ loadKey('keyfile')
 def loadKey(filename):
     if os.path.isfile(filename):
         with open(filename, 'r') as k:
-            key = k.read().strip()
+            contents = k.read().strip()
+            if contents:
+                key = contents
 
 
 
@@ -31,27 +36,27 @@ def loadKey(filename):
 def loadXML(filename):
     if not filename.endswith('.xml'):
         return
-
+    
     root = et.parse(filename).getroot()
-    term = root.attrib
+    term = {'id': root.attrib['id']}
+    term['TermName'] = root.find('TermName').text
 
-    for child in root:
-        if child.tag == 'TermName':
-            term[child.tag] = child.text
-        elif child.tag == 'TermDefinition':
+    for child in root.findall('TermDefinition'):
+        audience = child.find('Audience')
+        dictionary = child.find('Dictionary')
+        
+        if (audience.text == 'Patient') or \
+           (dictionary and dictionary.text == 'Cancer.gov'):
 
-            for sub in child:
-                if (sub.tag == 'Audience' and sub.text != 'Patient') or \
-                   (sub.tag == 'Dictionary' and sub.text != 'Cancer.gov'):
-                    return
-                elif sub.tag == 'DefinitionText':
-                    term[sub.tag] = sub.text if sub.text else ''
-                    for subchild in sub:
-                        term[sub.tag] += subchild.text + subchild.tail if subchild.tail else ''
+            definition = child.find('DefinitionText')
+            text = definition.text if definition.text else ''
+            
+            for subchild in definition:
+                text += subchild.text + subchild.tail if subchild.tail else ''
+                
+            term['DefinitionText'] = ' '.join(text.replace('\n', '').split())
 
-    return (term['id'], term['TermName'], term['DefinitionText'])
-
-
+            return (term['id'], term['TermName'], term['DefinitionText'])
 
 #####################################################################
 # Returns the contents of a directory as an array of glossary terms
@@ -121,3 +126,8 @@ def queryDatabase(dbname, term, type = 'exact'):
     db.close()
 
     return results
+    
+
+#####################################################################
+loadKey('keyfile')
+#####################################################################
