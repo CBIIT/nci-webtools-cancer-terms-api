@@ -1,15 +1,27 @@
 # nci-analysis-tools-glossary
-REST service for glossary of cancer terms
+RESTful service for glossary of cancer terms
 
-Sample (using JQuery)
-
+Search by term (using JQuery)
 ```javascript
 var query = { 
   term: 'cancer', 
   type: 'contains' // can be 'begins' or 'exact'
 };
 
-$.post('http://analysistools-sandbox.nci.nih.gov/glossaryRest/define', 
+$.post('http://analysistools-dev.nci.nih.gov/glossaryRest/define', 
+JSON.stringify(query))
+.done(function(data) {
+    console.log(data);
+});
+```
+
+Search by CDR
+```javascript
+var query = { 
+  id: 'CDR0000045333', 
+};
+
+$.post('http://analysistools-dev.nci.nih.gov/glossaryRest/defineCDR', 
 JSON.stringify(query))
 .done(function(data) {
     console.log(data);
