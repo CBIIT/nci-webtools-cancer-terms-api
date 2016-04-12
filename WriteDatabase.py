@@ -3,6 +3,7 @@
 from pysqlcipher import dbapi2 as sqlcipher
 import xml.etree.cElementTree as et
 import sqlite3
+import zipfile
 import os
 
 # Example usage: 
@@ -13,6 +14,12 @@ import os
 # Default filename is 'keyfile'
 
 key = 'passphrase'
+
+archive_name = 'GlossaryTerm.zip'
+
+zip = zipfile.ZipFile(archive_name)
+zip.extractall()
+zip.close()
 
 #####################################################################
 # Loads the passphrase from a keyfile
