@@ -99,7 +99,7 @@ def queryCDR(id):
 
 
 #####################################################################
-# Returns the contents of the keyfile
+# Loads the keyfile
 # Parameter - Path to the keyfile
 #####################################################################
 
