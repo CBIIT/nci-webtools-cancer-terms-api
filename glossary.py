@@ -134,12 +134,12 @@ def after_request(response):
 import argparse
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-p', dest = 'port_number', type = int, default = '8080', help = 'Sets the Port')
+    parser.add_argument('-p', dest = 'port', type = int, default = '8080', help = 'Sets the Port')
     parser.add_argument('-k', dest = 'keyfile', default = 'keyfile', help = 'Sets the Keyfile')
     args = parser.parse_args()
 
     loadKey(args.keyfile)
 
-    app.run(host='0.0.0.0', port = args.port_num, debug = False, use_evalex = False)
+    app.run(host='0.0.0.0', port = args.port, debug = False, use_evalex = False)
     
 
