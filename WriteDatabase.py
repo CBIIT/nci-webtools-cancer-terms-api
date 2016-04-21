@@ -146,7 +146,7 @@ if __name__ == '__main__':
     parser.add_argument('-o', '--output', dest = 'output', default='glossary.db', help='Sets the name of the output file')
     args = parser.parse_args()
 
-    if os.path.isfile(filename):
+    if os.path.isfile(args.keyfile):
         loadKey(args.keyfile)
 
     if not os.path.isdir(args.directory):
