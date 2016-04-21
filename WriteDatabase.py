@@ -133,8 +133,25 @@ def queryDatabase(dbname, term, type = 'exact'):
     db.close()
 
     return results
-    
 
+
+    
 #####################################################################
-loadKey('keyfile')
+# Generates a glossary database from a specified folder
+# Parameters - 1. -d, --directory   The folder to read terms from
+#              2. -k, --keyfile     The file containing the secret key
+#              2. -o, --output      The name of the output file
 #####################################################################
+
+import argparse
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    # Default port is production value; prod, stage, dev = 8140, sandbox = 9140
+    parser.add_argument('-d', '--directory', dest = 'directory', default='GlossaryTerm', help='Sets the glossary terms directory')
+    parser.add_argument('-k', '--keyfile', dest = 'keyfile', default='keyfile', help='Sets the keyfile to read from')
+    parser.add_argument('-o', '--output', dest = 'output', default='glossary.db', help='Sets the name of the output file')
+    args = parser.parse_args()
+    
+    loadKey(args.keyfile)
+    createDatabase(args.directory, args.output):
+
