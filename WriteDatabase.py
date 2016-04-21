@@ -13,13 +13,7 @@ import os
 # Load passphrase from external file in production
 # Default filename is 'keyfile'
 
-key = 'passphrase'
-
-archive_name = 'GlossaryTerm.zip'
-
-zip = zipfile.ZipFile(archive_name)
-zip.extractall()
-zip.close()
+config = {key: 'passphrase'}
 
 #####################################################################
 # Loads the passphrase from a keyfile
@@ -31,7 +25,7 @@ def loadKey(filename):
         with open(filename, 'r') as k:
             contents = k.read().strip()
             if contents:
-                key = contents
+                config['key'] = contents
 
 
 
@@ -96,11 +90,11 @@ def createDatabase(directory, dbname):
         os.remove(dbname)
 
     db = sqlcipher.connect(dbname)
-    db.executescript('pragma key = "%s" ' % key)
+    db.executescript('pragma key = "%s" ' % config['key'])
     db.execute('create table terms(id text, name text, definition text)')
 
     for term in generateDictionary(directory):
-        db.executescript('pragma key = "%s" ' % key)
+        db.executescript('pragma key = "%s" ' % config['key'])
         db.execute('insert into terms values (?, ?, ?)', term)
 
     db.commit()
@@ -128,7 +122,7 @@ def queryDatabase(dbname, term, type = 'exact'):
         term += '%'
 
     term = tuple([term])
-    db.executescript('pragma key = "%s" ' % key)
+    db.executescript('pragma key = "%s" ' % config['key'])
     results = db.execute('select * from terms where name like ?', term).fetchall()
     db.close()
 
@@ -151,7 +145,14 @@ if __name__ == '__main__':
     parser.add_argument('-k', '--keyfile', dest = 'keyfile', default='keyfile', help='Sets the keyfile to read from')
     parser.add_argument('-o', '--output', dest = 'output', default='glossary.db', help='Sets the name of the output file')
     args = parser.parse_args()
-    
-    loadKey(args.keyfile)
-    createDatabase(args.directory, args.output):
 
+    if os.path.isfile(filename):
+        loadKey(args.keyfile)
+
+    if not os.path.isdir(args.directory):
+        args.directory = 'GlossaryTerm'
+        zip = zipfile.ZipFile('GlossaryTerm.zip')
+        zip.extractall()
+        zip.close()    
+    
+    createDatabase(args.directory, args.output)
