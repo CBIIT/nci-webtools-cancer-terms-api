@@ -150,7 +150,7 @@ if __name__ == '__main__':
             key = f.read.strip()
             if key:
                 config['key'] = key
-    else
+    else:
         print 'Warning: Keyfile {0} not found. Using default value for passphrase'.format(args.keyfile)
  
 
