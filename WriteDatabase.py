@@ -4,30 +4,13 @@ from pysqlcipher import dbapi2 as sqlcipher
 import xml.etree.cElementTree as et
 import sqlite3
 import zipfile
+import sys
 import os
 
 # Example usage: 
-# loadKey('keyfile') (if exists)
-# createDatabase('GlossaryTerm', 'glossary.db')
-#
-# Load passphrase from external file in production
-# Default filename is 'keyfile'
+# python WriteDatabase.py -d GlossaryTerm -k secretKey -o glossary.db
 
-config = {key: 'passphrase'}
-
-#####################################################################
-# Loads the passphrase from a keyfile
-# Parameter - Path to the keyfile
-#####################################################################
-
-def loadKey(filename):
-    if os.path.isfile(filename):
-        with open(filename, 'r') as k:
-            contents = k.read().strip()
-            if contents:
-                config['key'] = contents
-
-
+config = {'key': 'passphrase'}
 
 #####################################################################
 # Returns the contents of a single XML document as a tuple
@@ -59,6 +42,8 @@ def loadXML(filename):
 
             return (term['id'], term['TermName'], term['DefinitionText'])
 
+
+
 #####################################################################
 # Returns the contents of a directory as an array of glossary terms
 # Parameter - Path to the glossary terms directory
@@ -68,12 +53,18 @@ def generateDictionary(directory):
     terms = []
 
     os.chdir(directory)
-    for file in os.listdir('.'):
+
+    files = os.listdir('.')
+    for index, file in enumerate(files):
+        print 'Reading xml documents ({0}/{1})\r'.format(index + 1, len(files)),
+        sys.stdout.flush()
+
         term = loadXML(file)
 
         if term:
             terms.append(term)
 
+    print
     os.chdir('..')
     return terms
 
@@ -86,19 +77,27 @@ def generateDictionary(directory):
 #####################################################################
 
 def createDatabase(directory, dbname):
+    
     if os.path.isfile(dbname):
+        print 'Replacing existing database: {0}'.format(dbname)
         os.remove(dbname)
 
     db = sqlcipher.connect(dbname)
     db.executescript('pragma key = "%s" ' % config['key'])
     db.execute('create table terms(id text, name text, definition text)')
-
-    for term in generateDictionary(directory):
+    
+    terms = generateDictionary(directory)
+    for index, term in enumerate(terms):
+        print 'Adding terms ({0}/{1})\r'.format(index + 1, len(terms)),
+        sys.stdout.flush()
+        
         db.executescript('pragma key = "%s" ' % config['key'])
         db.execute('insert into terms values (?, ?, ?)', term)
 
     db.commit()
     db.close()
+    
+    print 'Finished writing database: {0}'.format(dbname)
 
 
 
@@ -139,20 +138,31 @@ def queryDatabase(dbname, term, type = 'exact'):
 
 import argparse
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    # Default port is production value; prod, stage, dev = 8140, sandbox = 9140
+    parser = argparse.ArgumentParser(description = 'Creates an encrypted sqlite3 database of terms from a given directory')
     parser.add_argument('-d', '--directory', dest = 'directory', default='GlossaryTerm', help='Sets the glossary terms directory')
     parser.add_argument('-k', '--keyfile', dest = 'keyfile', default='keyfile', help='Sets the keyfile to read from')
     parser.add_argument('-o', '--output', dest = 'output', default='glossary.db', help='Sets the name of the output file')
     args = parser.parse_args()
 
     if os.path.isfile(args.keyfile):
-        loadKey(args.keyfile)
+        print 'Loading keyfile: {0}'.format(args.keyfile)
+        with open(args.keyfile, 'r') as f:
+            key = f.read.strip()
+            if key:
+                config['key'] = key
+    else
+        print 'Warning: Keyfile {0} not found. Using default value for passphrase'.format(args.keyfile)
+ 
 
     if not os.path.isdir(args.directory):
+        print 'Warning: {0} is not a valid directory, using default directory: GlossaryTerm'.format(args.directory)
         args.directory = 'GlossaryTerm'
-        zip = zipfile.ZipFile('GlossaryTerm.zip')
-        zip.extractall()
-        zip.close()    
-    
+	    
+        if not os.path.isDir('GlossaryTerm'):
+            filename = 'GlossaryTerm.zip'
+            print 'Extracting glossary terms from archive: {0}'.format(filename)
+            zip = zipfile.ZipFile(filename)
+            zip.extractall()
+            zip.close()
+
     createDatabase(args.directory, args.output)
