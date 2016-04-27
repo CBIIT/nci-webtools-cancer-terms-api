@@ -16,7 +16,7 @@ function submitCDR() {
         $('#term').attr('disabled', true);
         $('#search').attr('disabled', true);
 
-        var request = $.post('http://' + window.location.hostname + '/glossaryRest/defineCDR', 
+        var request = $.post(window.location.href + '/glossaryRest/defineCDR', 
         JSON.stringify({ id: term }))
         
         request.done(function(data) {
