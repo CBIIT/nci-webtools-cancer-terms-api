@@ -1,12 +1,18 @@
-from pysqlcipher import dbapi2 as sqlcipher
+from pysqlcipher import dbapi2 as sqlite
 from flask import Flask, request
+from StringIO import StringIO
 import sqlite3
 import json
 import os
 
 app = Flask(__name__)
-app.config['db'] = 'glossary.db'
-app.config['key'] = 'passphrase'
+
+# Configuration for: config['DB', 'KEY']
+app.config.from_pyfile('config.ini')
+
+db = sqlite.connect(app.config['DB'])
+
+
 
 
 #####################################################################
@@ -18,10 +24,10 @@ app.config['key'] = 'passphrase'
 #                 3. 'exact'    - The term name matches the query
 #####################################################################
 
-@app.route('/glossaryRest/defineCDR', methods = ['POST'])
+@app.route('/defineCDR', methods = ['GET'])
 def defineCDR():
     data = json.loads(request.stream.read())
-    results = queryCDR(data['id'])
+    results = queryCDR(data['cdr'])
     
     if results:
         return json.dumps(results)
@@ -39,7 +45,7 @@ def defineCDR():
 #                 3. 'exact'    - The term name matches the query
 #####################################################################
 
-@app.route('/glossaryRest/define', methods = ['POST'])
+@app.route('/define', methods = ['GET'])
 def define():
     data = json.loads(request.stream.read())
     term = data['term']
@@ -96,21 +102,22 @@ def queryCDR(id):
 
     return results
 
-
-
 #####################################################################
-# Loads the keyfile
-# Parameter - Path to the keyfile
+# Loads database into memory to reduce disk access
 #####################################################################
+def init_db(app):
+    conn = sqlite3.connect(app.config['DB'])
+    temp = StringIO()
+    for line in con.iterdump():
+        temp.write('%s\n' % line)
+    conn.close()
+    temp.seek(0)
 
-def loadKey(filename):
-    if os.path.isfile(filename):
-        with open(filename, 'r') as k:
-            key = k.read().strip()
-            if key:
-                app.config['key'] = key
+    app.sqlite = sqlite3.connect(':memory:')
+    app.sqlite.cusor().executescript(tempfile.read())
+    app.sqlite.commit()
+    app.sqlite.row_factory = sqlite3.Row
 
-    
 
 #####################################################################
 # Allows cross-origin resource sharing
