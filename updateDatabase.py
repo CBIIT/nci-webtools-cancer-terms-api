@@ -10,7 +10,7 @@ import os
 # Example usage: 
 # python WriteDatabase.py -d GlossaryTerm -k secretKey -o glossary.db
 
-config = {'key': 'passphrase'}
+config = {'key': 'passphrase', 'db': sqlcipher.connect(':memory:')}
 
 #####################################################################
 # Returns the contents of a single XML document as a tuple
@@ -127,6 +127,14 @@ def queryDatabase(dbname, term, type = 'exact'):
 
     return results
 
+def init_database(db):
+    disk_db = sqlcipher.connect(db)
+    
+    disk_db.executescript('pragma key = "%s" ' % config['key'])
+    script = "".join(line for line in disk_db.iterdump())
+
+    #config['db'].executescript('pragma key = "%s" ' % config['key'])
+    config['db'].executescript(script)
 
     
 #####################################################################
