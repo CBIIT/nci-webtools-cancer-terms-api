@@ -11,9 +11,16 @@ app_db = None
 
 
 #####################################################################
-# Sample query: curl "localhost:9000/name/?query=cancer"
-#
 # Allows a user to query the database for a specific term
+#
+# Sample queries: curl -G "localhost:10000/name/cancer/"
+#                 curl -G "localhost:10000/name/cancer%vaccine/"
+#                 curl -G "localhost:10000/name/contains/cancer/"
+#                 curl -G "localhost:10000/name/starts_with/cancer/"
+#                 curl -G "localhost:10000/id/CDR0000045333/"
+#                 curl -G "localhost:10000/id/contains/45333/"
+#                 curl -G "localhost:10000/definition/contains/cancer/"
+#
 # Parameters - 1. User Query
 #
 #              2. Database Column:
@@ -28,12 +35,13 @@ app_db = None
 #
 #####################################################################
 
-@app.route('/<column>/', methods = ['GET'])
-def define(column):
-    query = request.args.get('query')
-    type  = request.args.get('type')
+@app.route('/<column>/<query>/', methods = ['GET'])
+def match(column, query):
+    return json.dumps(lookup(column, None, query))
 
-    return json.dumps(lookup(query, column, type))
+@app.route('/<column>/<type>/<query>/', methods = ['GET'])
+def define(column, type, query):
+    return json.dumps(lookup(column, type, query))
 
 
 
@@ -51,26 +59,28 @@ def after_request(response):
 
 
 #####################################################################
-# Queries an encrypted glossary database
-# Parameters - 1. User Query
+# Queries the glossary database
 #
-#              2. Database Column:
+# Parameters - 1. Database Column:
 #                 1. 'id'         - Search by cdr
 #                 2. 'name'       - Search by term name
 #                 3. 'definition' - Search by definition
 #
 #
-#              3. Search Type:
+#              2. Search Type:
 #                 1. 'contains'   - The term contains the query
 #                 2. 'begins'     - The term begins with the query
 #                 3. 'exact'      - The term matches the query
+#
+#              3. User Query
+#
 #####################################################################
 
-def lookup(query, column = 'name', type = 'exact'):
+def lookup(column, type, query):
     if type == 'contains':
         query = '%' + query + '%'
     
-    elif type == 'begins':
+    elif type == 'starts_with':
         query += '%'
 
     if (column in ['id', 'name', 'definition']):
@@ -102,7 +112,6 @@ app_db = init_db(app.config)
 
 
 
-
 # For local development only
 if __name__ == '__main__':
-    app.run(host = '0.0.0.0', port = 9000, use_debugger = True, use_reloader = True)
+    app.run(host = '0.0.0.0', port = 10000, use_debugger = True, use_reloader = True)
