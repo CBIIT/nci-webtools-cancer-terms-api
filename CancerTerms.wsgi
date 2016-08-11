@@ -1,4 +1,4 @@
 import sys
 sys.stdout = sys.stderr
 
-from cancerTerms import app as application
+from CancerTerms import app as application

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from pysqlcipher import dbapi2 as sqlcipher
 from flask import Flask, request
 from StringIO import StringIO
@@ -83,7 +85,7 @@ def lookup(column, type, query):
     elif type == 'starts_with':
         query += '%'
 
-    if (column in ['id', 'name', 'definition']):
+    if (column in ['id', 'term', 'definition']):
         return app_db.execute('select * from terms where {} like ?'.format(column), (query,)).fetchall()
 
     return
