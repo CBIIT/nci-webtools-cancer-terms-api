@@ -1,25 +1,23 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
 from pysqlcipher import dbapi2 as sqlcipher
-import (
-    xml.etree.cElementTree as et,
-    os,
-    sqlite3,
-    sys,
-    uuid)
+import xml.etree.cElementTree as et
+import os
+import sqlite3
+import sys
+import uuid
 
 # Example usage: 
 # python WriteDatabase.py -i CancerTerms
 
 config = {
-    DB = 'glossary.py',
-    KEY = uuid.uuid4().hex
+    'DB'  : 'glossary.db',
+    'KEY' : uuid.uuid4().hex
 }
 
 with open('config.ini', 'w') as f:
-    f.write(config.KEY)
+    f.write(config['KEY'])
 
 
 #####################################################################
@@ -68,7 +66,7 @@ def generateDictionary(directory):
 
     files = os.listdir(directory)
     for index, file in enumerate(files):
-        print 'Reading xml documents ({0}/{1})\r'.format(index + 1, len(files)),
+        print('Reading xml documents ({0}/{1})\r'.format(index + 1, len(files))),
         sys.stdout.flush()
 
         term = loadXML(os.path.join(directory, file))
@@ -76,7 +74,7 @@ def generateDictionary(directory):
         if term:
             terms.append(term)
 
-    print
+    print()
 
     return terms
 
@@ -91,7 +89,7 @@ def generateDictionary(directory):
 def createDatabase(directory, dbname):
     
     if os.path.isfile(dbname):
-        print 'Replacing existing database: {0}'.format(dbname)
+        print('Replacing existing database: {0}'.format(dbname))
         os.remove(dbname)
 
     db = sqlcipher.connect(dbname)
@@ -100,7 +98,7 @@ def createDatabase(directory, dbname):
     
     terms = generateDictionary(directory)
     for index, term in enumerate(terms):
-        print 'Adding terms ({0}/{1})\r'.format(index + 1, len(terms)),
+        print('Adding terms ({0}/{1})\r'.format(index + 1, len(terms))),
         sys.stdout.flush()
         
         db.executescript('pragma key = "{0}"'.format(config['KEY']))
@@ -109,7 +107,7 @@ def createDatabase(directory, dbname):
     db.commit()
     db.close()
     
-    print 'Finished writing database: {0}'.format(dbname)
+    print('Finished writing database: {0}'.format(dbname))
 
 
 
