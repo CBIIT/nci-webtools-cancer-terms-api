@@ -1,20 +1,25 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 from pysqlcipher import dbapi2 as sqlcipher
-import xml.etree.cElementTree as et
-import sqlite3
-import sys
-import os
+import (
+    xml.etree.cElementTree as et,
+    os,
+    sqlite3,
+    sys,
+    uuid)
 
 # Example usage: 
-# python WriteDatabase.py
+# python WriteDatabase.py -i CancerTerms
 
-config = dict()
+config = {
+    DB = 'glossary.py',
+    KEY = uuid.uuid4().hex
+}
 
-# read values for DB and KEY into config 
-with open('config.ini') as cfg:
-    exec(cfg.read(), config)
+with open('config.ini', 'w') as f:
+    f.write(config.KEY)
 
 
 #####################################################################
@@ -150,7 +155,7 @@ def query(dbname, column, term, type = 'exact'):
 #
 # Parameters
 #             -i, --input     The path to the directory containing xml terms
-#             -o, --output    The path to the output file
+#             -o, --output    The path to the output file (default: glossary.db)
 ################################################################################
 
 import argparse
